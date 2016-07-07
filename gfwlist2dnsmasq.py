@@ -43,8 +43,9 @@ domain_pattern = '([\w\-\_]+\.[\w\.\-\_]+)[\/\*]*'
 tmpfile = '/tmp/gfwlisttmp'
 # do not write to router internal flash directly
 outfile = '/tmp/dnsmasq_list.conf'
-rulesfile = './dnsmasq_list.conf'
- 
+#rulesfile = './dnsmasq_list.conf'
+rulesfile = '/etc/dnsmasq.d'
+
 fs =  file(outfile, 'w')
 fs.write('# gfw list ipset rules for dnsmasq\n')
 fs.write('# updated on ' + datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + '\n')
@@ -97,4 +98,7 @@ fs.close();
 print 'moving generated file to dnsmasg directory'
 shutil.move(outfile, rulesfile)
  
+print 'restart dnsmasq...'
+print os.popen('/etc/init.d/dnsmasq restart').read()
+
 print 'done!'
